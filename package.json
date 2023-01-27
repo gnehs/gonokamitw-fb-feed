@@ -1,0 +1,26 @@
+{
+  "name": "gonokamitw-fb-feed",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "🍜 台灣五之神限定通知",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gnehs/gonokamitw-fb-feed.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gnehs/gonokamitw-fb-feed/issues"
+  },
+  "homepage": "https://github.com/gnehs/gonokamitw-fb-feed#readme",
+  "dependencies": {
+    "puppeteer": "^19.6.1",
+    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-stealth": "^2.11.1"
+  }
+}
