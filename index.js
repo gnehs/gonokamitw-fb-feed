@@ -69,7 +69,7 @@ function hash(str, salt = 'salt') {
       try {
         let description = x.querySelector('.photo-description').innerHTML.trim()
         let isLimitedRamen = description.includes('各位拉麵與沾麵的愛好捧油!!') && description.includes('五之神有夠神')
-        let limitRamenName = description.match(/本週的限定【(.+?)】/)[1].trim().replace(/\!/g, '')
+        let limitRamenName = isLimitedRamen ? description.match(/本週的限定【(.+?)】/)[1].trim().replace(/\!/g, '') : null
         return {
           img: x.querySelector('.post-image').src,
           description,
