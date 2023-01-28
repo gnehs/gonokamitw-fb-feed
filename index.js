@@ -86,7 +86,7 @@ function hash(str, salt = 'salt') {
     }).filter(x => x !== null)
     return posts
   });
-  let existPosts = []
+  let existPosts = await fetch(`https://gnehs.github.io/gonokamitw-feed/posts.json`).then(x => x.json())
   // update time
   existPosts = existPosts.map(x => {
     let post = posts.find(y => y.id === x.id)
