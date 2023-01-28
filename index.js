@@ -108,18 +108,8 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   posts.forEach(x => {
     fs.writeFileSync(`./dist/post/${x.id}.json`, JSON.stringify(x));
   })
-  // create README.md
-  let readme = fs.readFileSync('./README.md', 'utf8')
-  let latestPost = posts[0]
-  readme += '\n\n'
-  readme += '## 最新貼文\n'
-  readme += `![](https://github.com/gnehs/gonokamitw-feed/blob/gh-pages${latestPost.img}?raw=true)\n\n`
-  readme += `👍 \`${latestPost.likes}\` 🕒 \`${latestPost.time}\`\n\n`
-  readme += '```\n'
-  readme += latestPost.description
-  readme += '\n```\n'
-  fs.writeFileSync('./dist/README.md', readme)
-  // copy public files
+
+  // copy public file
   fs.copyFileSync('./public/index.html', './dist/index.html')
 
   await browser.close();
