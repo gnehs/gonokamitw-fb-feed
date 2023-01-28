@@ -85,7 +85,7 @@
       </h1>
       <code>https://gnehs.github.io/gonokamitw-feed/posts.json</code>
 
-      <div v-for="post in (showAll?posts:posts.slice(0,10))" class="post">
+      <div v-for="post in (showAll?posts:posts.slice(0,10))" class="post" :id="post.id">
         <div class="header">
           <a href="https://www.instagram.com/gonokamitw/" target="_blank">
             五之神製作所 台灣
