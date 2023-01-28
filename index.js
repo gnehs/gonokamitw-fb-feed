@@ -25,14 +25,15 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       '--disable-dev-shm-usage',
       '--disable-accelerated-2d-canvas',
       '--disable-gpu',
-      '--lang=zh-TW',
+      '--lang=zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
     ],
   });
   const page = await browser.newPage();
 
   // Set screen size
-  await page.setViewport({ width: 1080, height: 1024 });
+  await page.setViewport({ width: 1366, height: 768 });
   // get IP
+  console.log('➡️  goto `https://www.whatismyip.com.tw/`');
   await page.goto('https://www.whatismyip.com.tw/', { waitUntil: 'networkidle2' });
   let ip = await page.evaluate(() => {
     return document.querySelector('[data-ip]').getAttribute('data-ip')
@@ -41,20 +42,21 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   // goto picuki
   console.log('➡️  goto `https://www.picuki.com/profile/gonokamitw`');
   await page.goto(`https://www.picuki.com/profile/gonokamitw`, { waitUntil: 'networkidle2' });
-  console.log('🖱  scroll page');
+  await page.exposeFunction('log', (value) => console.log(value));
   await page.evaluate(async () => {
     await new Promise((resolve, reject) => {
       let totalHeight = 0;
-      let distance = 100;
+      let distance = Math.random() * 100 + 500;
       let timer = setInterval(() => {
         let scrollHeight = document.body.scrollHeight;
         window.scrollBy(0, distance);
         totalHeight += distance;
-      }, 100);
-      setTimeout(() => {
-        clearInterval(timer);
-        resolve();
-      }, 10000);
+        log(`🖱  scroll page - ${totalHeight} / ${scrollHeight}`)
+        if (totalHeight >= scrollHeight) {
+          clearInterval(timer);
+          resolve();
+        }
+      }, 1000);
     });
   });
 
@@ -71,6 +73,7 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
           img: x.querySelector('.post-image').src,
           description: x.querySelector('.photo-description').innerHTML.trim(),
           likes: x.querySelector('.likes_photo').innerText.trim(),
+          comments: x.querySelector('.comments_photo').innerText.trim(),
           time: x.querySelector('.time').innerText.trim(),
           crawlerTime: new Date().toISOString()
         }
