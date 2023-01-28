@@ -108,10 +108,11 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   // create README.md
   let readme = fs.readFileSync('./README.md', 'utf8')
   let latestPost = posts[0]
+  readme += '\n\n'
   readme += '## 最新貼文\n'
   readme += `![](https://github.com/gnehs/gonokamitw-feed/blob/gh-pages${latestPost.img}?raw=true)\n\n`
-  readme += `${latestPost.description.replace(/\n/g, '\n\n')}\n\n`
   readme += `👍 \`${latestPost.likes}\` 🕒 \`${latestPost.time}\``
+  readme += `${latestPost.description.replace(/\n/g, '\n\n')}\n\n`
   fs.writeFileSync('./dist/README.md', readme)
 
   await browser.close();
