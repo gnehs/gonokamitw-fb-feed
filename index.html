@@ -96,6 +96,7 @@
           <span><i class='bx bx-like'></i> {{ post.likes }}</span>
           <span><i class='bx bx-comment'></i> {{ post.comments }}</span>
           <span><i class='bx bx-time'></i> {{ post.time }}</span>
+          <span v-if="post.isLimitedRamen"><i class='bx bx-fork'></i> {{ post.limitRamenName }}</span>
         </div>
         <div class="content" v-html="post.description"></div>
       </div>
