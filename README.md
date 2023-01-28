@@ -1,6 +1,7 @@
 # gonokamitw-fb-feed
 🍜 台灣五之神限定通知
-## 最新貼文
+## 如何使用？
+切換到 [`main`](https://github.com/gnehs/gonokamitw-feed/tree/main) 分支來查看程式碼## 最新貼文
 ![](https://github.com/gnehs/gonokamitw-feed/blob/gh-pages/imgs/e5391fc3.jpeg?raw=true)
 
 各位拉麵與沾麵的愛好捧油!!
