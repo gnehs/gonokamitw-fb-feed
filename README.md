@@ -1,10 +1,14 @@
 # gonokamitw-fb-feed
 🍜 台灣五之神限定通知
-## 如何使用？
-切換到 [`main`](https://github.com/gnehs/gonokamitw-feed/tree/main) 分支來查看程式碼## 最新貼文
+
+本程式透過擷取 Instagram 來獲取五之神的最新貼文。
+## 原始碼
+切換到 [`main`](https://github.com/gnehs/gonokamitw-feed/tree/main) 分支來查看程式碼
+
+## 最新貼文
 ![](https://github.com/gnehs/gonokamitw-feed/blob/gh-pages/imgs/e5391fc3.jpeg?raw=true)
 
-各位拉麵與沾麵的愛好捧油!!
+👍 `38` 🕒 `1 day ago`各位拉麵與沾麵的愛好捧油!!
 
 五之神有夠神~~你今天吃蔬菜了嗎XD!!企劃!!
 
@@ -58,4 +62,3 @@
 
 謝謝配合!~  #五之神製作所  #五之神製作所台灣  #五之神水產  #日式拉麵  #台北拉麵  #五之神製作所台灣  #五之神有夠神 #限定拉麵五之神製作所  #限定拉麵
 
-👍 `38` 🕒 `1 day ago`
