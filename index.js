@@ -32,9 +32,16 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   // Set screen size
   await page.setViewport({ width: 1080, height: 1024 });
-  console.log('goto page');
+  // get IP
+  await page.goto('https://www.whatismyip.com.tw/', { waitUntil: 'networkidle2' });
+  let ip = await page.evaluate(() => {
+    return document.querySelector('[data-ip]').getAttribute('data-ip')
+  })
+  console.log(`🌐  IP: ${ip}`)
+  // goto picuki
+  console.log('➡️  goto `https://www.picuki.com/profile/gonokamitw`');
   await page.goto(`https://www.picuki.com/profile/gonokamitw`, { waitUntil: 'networkidle2' });
-  console.log('scroll page');
+  console.log('🖱  scroll page');
   await page.evaluate(async () => {
     await new Promise((resolve, reject) => {
       let totalHeight = 0;
@@ -51,7 +58,7 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     });
   });
 
-  console.log('parse page');
+  console.log('🧭  parse page');
 
   fs.mkdirSync('./dist', { recursive: true });
   fs.mkdirSync('./dist/imgs', { recursive: true });
@@ -76,10 +83,12 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     let id = hash(x.description)
     let imgSrc = x.img;
     let imgFileName = id + '.jpeg'
-    console.log(`fetch img: ${imgFileName}`)
+
     let img = await fetch(imgSrc)
     img = new Buffer.from(await img.arrayBuffer())
     fs.writeFile(`./dist/imgs/${imgFileName}`, img, () => { })
+
+    console.log(`🍜  saved img: ${imgFileName}`)
 
     return {
       id,
@@ -88,8 +97,13 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     }
   })
   posts = await Promise.all(posts)
-  console.log(`posts: ${posts.length}`)
+  console.log(`🗄  posts: ${posts.length}`)
   fs.writeFileSync('./dist/posts.json', JSON.stringify(posts));
+  // save posts to file
+  fs.mkdirSync('./dist/post', { recursive: true });
+  posts.forEach(x => {
+    fs.writeFileSync(`./dist/post/${x.id}.json`, JSON.stringify(x));
+  })
 
   await browser.close();
 })();
