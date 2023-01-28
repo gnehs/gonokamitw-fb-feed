@@ -72,6 +72,7 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
           description: x.querySelector('.photo-description').innerHTML.trim(),
           likes: x.querySelector('.likes_photo').innerText.trim(),
           time: x.querySelector('.time').innerText.trim(),
+          crawlerTime: new Date().toISOString()
         }
       } catch (e) {
         return null
