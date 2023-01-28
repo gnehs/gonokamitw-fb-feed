@@ -67,13 +67,18 @@ function hash(str, salt = 'salt') {
     let posts = document.querySelectorAll('.box-photo');
     posts = [...posts].map(x => {
       try {
+        let description = x.querySelector('.photo-description').innerHTML.trim()
+        let isLimitedRamen = description.includes('各位拉麵與沾麵的愛好捧油!!') && description.includes('五之神有夠神')
+        let limitRamenName = description.match(/本週的限定【(.+?)】/)[1].trim().replace(/\!/g, '')
         return {
           img: x.querySelector('.post-image').src,
-          description: x.querySelector('.photo-description').innerHTML.trim(),
+          description,
           likes: x.querySelector('.likes_photo').innerText.trim(),
           comments: x.querySelector('.comments_photo').innerText.trim(),
           time: x.querySelector('.time').innerText.trim(),
-          crawlerTime: new Date().toISOString()
+          crawlerTime: new Date().toISOString(),
+          isLimitedRamen,
+          limitRamenName
         }
       } catch (e) {
         return null
@@ -81,7 +86,7 @@ function hash(str, salt = 'salt') {
     }).filter(x => x !== null)
     return posts
   });
-  let existPosts = await fetch(`https://gnehs.github.io/gonokamitw-feed/posts.json`).then(x => x.json())
+  let existPosts = []
   // update time
   existPosts = existPosts.map(x => {
     let post = posts.find(y => y.id === x.id)
