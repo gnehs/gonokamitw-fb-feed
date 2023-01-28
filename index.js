@@ -11,8 +11,6 @@ function hash(str, salt = 'salt') {
   return hash.digest('hex').slice(0, 8)
 }
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 (async () => {
   // Add stealth plugin and use defaults (all evasion techniques)
   puppeteer.use(StealthPlugin());
