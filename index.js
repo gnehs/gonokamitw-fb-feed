@@ -81,26 +81,42 @@ function hash(str, salt = 'salt') {
     }).filter(x => x !== null)
     return posts
   });
-  posts = posts.map(async x => {
-    let id = hash(x.description)
-    let imgSrc = x.img;
-    let imgFileName = id + '.jpeg'
-
-    let img = await fetch(imgSrc)
-    img = new Buffer.from(await img.arrayBuffer())
-    fs.writeFile(`./dist/imgs/${imgFileName}`, img, () => { })
-
-    console.log(`🍜  saved img: ${imgFileName}`)
-
-    return {
-      id,
-      ...x,
-      img: `/imgs/${imgFileName}`
-    }
-  })
-  posts = await Promise.all(posts)
   let existPosts = await fetch(`https://gnehs.github.io/gonokamitw-feed/posts.json`).then(x => x.json())
-  posts = posts.filter(x => !existPosts.find(y => y.id === x.id))
+  // update time
+  existPosts = existPosts.map(x => {
+    let post = posts.find(y => y.id === x.id)
+    if (post) {
+      x.time = post.time
+    }
+    return x
+  })
+
+  posts = posts
+    .map(x => {
+      let id = hash(x.description)
+      return {
+        id,
+        ...x,
+      }
+    })
+    .filter(x => !existPosts.find(y => y.id === x.id))
+    .map(async x => {
+      let imgSrc = x.img;
+      let imgFileName = x.id + '.jpeg'
+
+      let img = await fetch(imgSrc)
+      img = new Buffer.from(await img.arrayBuffer())
+      fs.writeFile(`./dist/imgs/${imgFileName}`, img, () => { })
+
+      console.log(`🍜  saved img: ${imgFileName}`)
+
+      return {
+        ...x,
+        img: `/imgs/${imgFileName}`
+      }
+    })
+
+  posts = await Promise.all(posts)
   console.log(`🗄  new posts: ${posts.length}`)
   posts = [...posts, ...existPosts]
   fs.writeFileSync('./dist/posts.json', JSON.stringify(posts));
