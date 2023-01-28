@@ -99,7 +99,10 @@ function hash(str, salt = 'salt') {
     }
   })
   posts = await Promise.all(posts)
-  console.log(`🗄  posts: ${posts.length}`)
+  let existPosts = await fetch(`https://gnehs.github.io/gonokamitw-feed/posts.json`).then(x => x.json())
+  posts = posts.filter(x => !existPosts.find(y => y.id === x.id))
+  console.log(`🗄  new posts: ${posts.length}`)
+  posts = [...posts, ...existPosts]
   fs.writeFileSync('./dist/posts.json', JSON.stringify(posts));
   // save posts to file
   fs.mkdirSync('./dist/post', { recursive: true });
