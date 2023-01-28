@@ -119,6 +119,8 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   readme += latestPost.description
   readme += '\n```\n'
   fs.writeFileSync('./dist/README.md', readme)
+  // copy public files
+  fs.copyFileSync('./public/index.html', './dist/index.html')
 
   await browser.close();
 })();
