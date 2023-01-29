@@ -81,18 +81,21 @@ function hash(str, salt = 'salt') {
           limitRamenName
         }
       } catch (e) {
+        console.log(e)
         return null
       }
     }).filter(x => x !== null)
     return posts
   });
+
   let existPosts = await fetch(`https://gnehs.github.io/gonokamitw-feed/posts.json`).then(x => x.json())
+  console.log(`🗄  exist posts: ${existPosts.length}`)
+  console.log(`🕸  crawled posts: ${posts.length}(+${posts.length - existPosts.length})`)
   // update time
   posts = posts.map(x => ({ id: hash(x.description), ...x, }))
   existPosts = existPosts.map(x => {
     let post = posts.find(y => y.id === x.id)
     if (post) {
-      console.log(`🕒  update time: ${x.id} - ${x.time} -> ${post.time}`)
       x.time = post.time
       x.likes = post.likes
       x.comments = post.comments
@@ -119,7 +122,6 @@ function hash(str, salt = 'salt') {
     })
 
   posts = await Promise.all(posts)
-  console.log(`🗄  new posts: ${posts.length}`)
   posts = [...posts, ...existPosts]
   fs.writeFileSync('./dist/posts.json', JSON.stringify(posts));
   // save posts to file
