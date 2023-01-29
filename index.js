@@ -44,7 +44,7 @@ function hash(str, salt = 'salt') {
   await page.evaluate(async () => {
     await new Promise((resolve, reject) => {
       let totalHeight = 0;
-      let distance = Math.random() * 100 + 500;
+      let distance = Math.floor(Math.random() * 100) + 500;
       let timer = setInterval(() => {
         let scrollHeight = document.body.scrollHeight;
         window.scrollBy(0, distance);
@@ -88,22 +88,19 @@ function hash(str, salt = 'salt') {
   });
   let existPosts = await fetch(`https://gnehs.github.io/gonokamitw-feed/posts.json`).then(x => x.json())
   // update time
+  posts = posts.map(x => ({ id: hash(x.description), ...x, }))
   existPosts = existPosts.map(x => {
     let post = posts.find(y => y.id === x.id)
     if (post) {
+      console.log(`🕒  update time: ${x.id} - ${x.time} -> ${post.time}`)
       x.time = post.time
+      x.likes = post.likes
+      x.comments = post.comments
     }
     return x
   })
 
   posts = posts
-    .map(x => {
-      let id = hash(x.description)
-      return {
-        id,
-        ...x,
-      }
-    })
     .filter(x => !existPosts.find(y => y.id === x.id))
     .map(async x => {
       let imgSrc = x.img;
