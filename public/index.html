@@ -72,6 +72,31 @@
       font-size: 18px;
       opacity: .75;
     }
+
+    .btn {
+      all: unset;
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      opacity: .75;
+      transition: all .1s ease-in-out;
+    }
+
+    .btn:not(.btn--active):hover {
+      opacity: 1;
+      background-color: rgba(255, 255, 255, .5);
+    }
+
+    .btn.btn--active {
+      background-color: #fff;
+      opacity: 1;
+    }
+
+    .btn+.btn {
+      margin-left: 4px;
+    }
   </style>
 </head>
 
@@ -84,11 +109,20 @@
         </a>
       </h1>
       <code>https://gnehs.github.io/gonokamitw-feed/posts.json</code>
-
-      <div v-for="post in (showAll?posts:posts.slice(0,10))" class="post" :id="post.id">
+      <br>
+      <code>https://gnehs.github.io/gonokamitw-feed/okuyama_posts.json</code>
+      <br>
+      <br>
+      <button class="btn" @click="showProfile = 'gonokamitw'" :class="{ 'btn--active': showProfile == 'gonokamitw' }">
+        五之神製作所 台灣
+      </button>
+      <button class="btn" @click="showProfile = 'gonokami_okuyama'" :class="{ 'btn--active': showProfile == 'gonokami_okuyama' }">
+        奥山直人　五之神製作所 台湾
+      </button>
+      <div v-for="post in (showProfile=='gonokamitw' ? posts : okuyama_posts).slice(0, showAll ? undefined : 10)" class="post" :id="post.id">
         <div class="header">
-          <a href="https://www.instagram.com/gonokamitw/" target="_blank">
-            五之神製作所 台灣
+          <a :href="post.authorLink" target="_blank">
+            {{post.author}}
           </a>
         </div>
         <img :src="post.img" />
@@ -123,6 +157,19 @@
             this.posts = x.map(x => {
               x.img = `https://gnehs.github.io/gonokamitw-feed` + x.img
               x.description = x.description.replace(/\n/g, '<br>')
+              x.author = '五之神製作所 台灣'
+              x.authorLink = 'https://www.instagram.com/gonokamitw/'
+              return x
+            })
+          })
+        fetch('https://gnehs.github.io/gonokamitw-feed/okuyama_posts.json')
+          .then(response => response.json())
+          .then(x => {
+            this.okuyama_posts = x.map(x => {
+              x.img = `https://gnehs.github.io/gonokamitw-feed` + x.img
+              x.description = x.description.replace(/\n/g, '<br>')
+              x.author = '奥山直人　五之神製作所 台湾'
+              x.authorLink = 'https://www.instagram.com/gonokami_okuyama/'
               return x
             })
           })
@@ -130,6 +177,8 @@
       data() {
         return {
           posts: null,
+          okuyama_posts: null,
+          showProfile: `gonokamitw`,
           showAll: false
         }
       }
